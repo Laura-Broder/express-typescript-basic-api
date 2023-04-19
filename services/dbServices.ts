@@ -58,3 +58,9 @@ export default class DB implements IDB {
     });
   };
 }
+
+// In memory db
+export const db = new DB({
+  users: [],
+  articles: [],
+});

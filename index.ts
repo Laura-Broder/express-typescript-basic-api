@@ -1,38 +1,14 @@
 "use strict";
 
-import lodash from "lodash";
-// import uuidv4 from 'uuid/v4';
-import { v4 as uuidv4 } from "uuid";
-
-import express from "express";
+import express, { NextFunction } from "express";
 import { Request, Response } from "express";
-import { NextFunction } from "express";
-import DB from "./services/dbServices";
+import { db } from "./services/dbServices";
 import { IUser } from "./services/userServices";
 import { VisibilityEnum } from "./services/articleServices";
+import { auth } from "./services/authServices";
 
 const app = express();
 app.use(express.json());
-
-// Your code starts here.
-// Placeholders for all requests are provided for your convenience.
-
-const db = new DB({
-  users: [],
-  articles: [],
-});
-
-function auth(req: Request, res: Response, next: NextFunction) {
-  const token = req.headers.authorization;
-  if (!token) return res.sendStatus(401);
-  const user = db.getUserByToken(token);
-  if (!user) return res.sendStatus(404);
-  req.body.user = user;
-  req.body.token = token;
-  console.log("User successfully authenticated");
-
-  next();
-}
 
 app.get("/api", (req: Request, res: Response) => {
   res.status(200).json({ db });
